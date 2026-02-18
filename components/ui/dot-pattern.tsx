@@ -218,7 +218,7 @@ export function DotPattern({
   return (
     <div
       ref={containerRef}
-      className={cn("fixed inset-0 overflow-hidden bg-background", className)}
+      className={cn("absolute inset-0 overflow-hidden bg-background", className)}
     >
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
 
@@ -232,7 +232,7 @@ export function DotPattern({
       />
 
       {/* Content layer */}
-      {children && <div className="relative z-10 h-full w-full">{children}</div>}
+      {children && <div className="relative z-10">{children}</div>}
     </div>
   )
 }

@@ -1,6 +1,7 @@
 
 "use client";
 
+import Link from "next/link";
 import { motion } from "motion/react";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "../components/theme-provider";
@@ -21,18 +22,18 @@ export default function Home() {
   );
 
   return (
-    <DotPattern
-      key={theme}
-      className="fixed inset-0 -z-10"
-      dotSize={2}
-      gap={24}
-      baseColor={dotPatternColors.baseColor}
-      glowColor={dotPatternColors.glowColor}
-      proximity={120}
-      glowIntensity={1}
-      waveSpeed={0.5}
-    >
-      <main className="flex min-h-screen flex-col items-center justify-center px-6 relative z-10">
+    <main className="relative flex min-h-screen flex-col items-center justify-center px-6">
+      <DotPattern
+        key={theme}
+        className="absolute inset-0 -z-10"
+        dotSize={2}
+        gap={24}
+        baseColor={dotPatternColors.baseColor}
+        glowColor={dotPatternColors.glowColor}
+        proximity={120}
+        glowIntensity={1}
+        waveSpeed={0.5}
+      />
         <div className="absolute right-4 top-4 flex items-center gap-2 rounded-full border bg-background/80 px-3 py-1 text-xs text-muted-foreground shadow-sm backdrop-blur">
           <span className="hidden text-[11px] font-medium sm:inline">
             {isDark ? "Dark" : "Light"} mode
@@ -64,8 +65,20 @@ export default function Home() {
           </span>
           .
         </motion.p>
-      </main>
-    </DotPattern>
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+          className="mt-6"
+        >
+          <Link
+            href="/converter"
+            className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground hover:opacity-90"
+          >
+            Open converter
+          </Link>
+        </motion.div>
+    </main>
   );
 }
 
