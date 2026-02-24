@@ -5,14 +5,38 @@ import { AppBackground } from "@/components/layout/app-background";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
+function ConverterSkeleton() {
+  return (
+    <div className="fixed inset-0 flex flex-col items-center justify-center gap-3">
+      <div className="flex items-center gap-1.5">
+        {[0, 1, 2].map((i) => (
+          <span
+            key={i}
+            className="h-1.5 w-1.5 rounded-full bg-foreground/50"
+            style={{
+              animation: "wave 1.2s ease-in-out infinite",
+              animationDelay: `${i * 0.2}s`,
+            }}
+          />
+        ))}
+      </div>
+      <p className="text-xs text-muted-foreground tracking-wide">Loading</p>
+      <style>{`
+        @keyframes wave {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-6px); }
+        }
+      `}</style>
+    </div>
+  );
+}
+
 const Converter = dynamic(
   () =>
     import("@/components/converter/converter").then((mod) => mod.Converter),
   {
     ssr: false,
-    loading: () => (
-      <p className="text-sm text-muted-foreground">Loading converter…</p>
-    ),
+    loading: () => <ConverterSkeleton />,
   }
 );
 
