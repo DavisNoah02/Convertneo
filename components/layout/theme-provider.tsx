@@ -48,7 +48,7 @@ function applyTheme(theme: Theme) {
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>("light");
+  const [theme, setTheme] = useState<Theme>("dark");
 
   useEffect(() => {
     const preferred = getPreferredTheme();
@@ -64,7 +64,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     () => ({
       theme,
       toggleTheme: () =>
-        setTheme((prev) => (prev === "light" ? "dark" : "light")),
+        setTheme((prev) => (prev === "dark" ? "light" : "dark")),
     }),
     [theme],
   );

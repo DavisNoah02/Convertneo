@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { Upload, File, X, Image, Music, Video, FileCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+
 export interface FileUploadZoneProps {
   onFilesSelected?: (files: File[]) => void;
   accept?: Record<string, string[]>;
@@ -80,10 +81,10 @@ export function FileUploadZone({
         {...getRootProps()}
         className={cn(
           "relative group cursor-pointer rounded-xl border-2 border-dashed transition-all duration-300",
-          "bg-card/50 backdrop-blur-sm",
+          "bg-gradient-to-b from-muted/70 via-background/95 to-muted/70 dark:from-background/80 dark:via-background/95 dark:to-background/80 backdrop-blur-sm",
           isActive
-            ? "border-primary bg-primary/5 scale-[1.02] shadow-lg shadow-primary/20"
-            : "border-border hover:border-primary/50 hover:bg-card/80",
+            ? "border-primary bg-primary/5 scale-[1.02] shadow-lg shadow-primary/25"
+            : "border-border/70 hover:border-primary/60 hover:bg-card/80",
           className
         )}
       >

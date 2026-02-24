@@ -2,8 +2,9 @@
 
 import { useEffect, useMemo, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { FileUploadZone } from "@/components/file-upload-zone";
+import { FileUploadZone } from "@/components/upload-zone/file-upload-zone";
 import { convert, getOutputFilename } from "@/lib/ffmpeg";
+import { toast } from "sonner";
 import {
   Download,
   Loader2,
@@ -60,6 +61,7 @@ export function Converter() {
   const [resultBlob, setResultBlob] = useState<Blob | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isConverting, setIsConverting] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const selectedFile = files[selectedIndex] ?? null;
   const category = selectedFile ? getCategory(selectedFile) : null;
@@ -73,6 +75,7 @@ export function Converter() {
     setResultBlob(null);
     setError(null);
     setProgress(null);
+    setShowSuccess(false);
   }, []);
 
   // Auto-pick a default output format after upload (different from input ext)
@@ -90,6 +93,7 @@ export function Converter() {
     setResultBlob(null);
     setIsConverting(true);
     setProgress(0);
+    setShowSuccess(false);
 
     try {
       const blob = await convert(selectedFile, {
@@ -99,8 +103,17 @@ export function Converter() {
       });
       setResultBlob(blob);
       setProgress(100);
+      toast.success("Conversion complete", {
+        description: `${getOutputFilename(
+          selectedFile.name,
+          outputFormat
+        )} is ready to download.`,
+      });
     } catch (e) {
       setError(e instanceof Error ? e.message : "Conversion failed");
+     toast.error("Conversion failed", {
+      description: "Please try again.",
+    });
       setProgress(null);
     } finally {
       setIsConverting(false);
@@ -215,6 +228,7 @@ export function Converter() {
                       setProgress(null);
                       setResultBlob(null);
                       setError(null);
+                      setShowSuccess(false);
                     }}
                     className="inline-flex h-10 w-10 items-center justify-center rounded-xl border bg-background text-muted-foreground hover:text-destructive hover:bg-destructive/10"
                     aria-label="Clear files"
@@ -231,7 +245,7 @@ export function Converter() {
                   className={cn(
                     "w-full inline-flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold transition",
                     canConvert
-                      ? "bg-primary text-primary-foreground hover:opacity-90"
+                      ? "bg-primary text-primary-foreground hover:opacity-80"
                       : "bg-muted text-muted-foreground cursor-not-allowed"
                   )}
                 >
@@ -303,6 +317,11 @@ export function Converter() {
           </motion.section>
         )}
       </AnimatePresence>
+
+      
+       
     </div>
   );
 }
+
+

@@ -54,7 +54,7 @@ export function DotPattern({
   const containerRef = useRef<HTMLDivElement>(null)
   const dotsRef = useRef<Dot[]>([])
   const mouseRef = useRef({ x: -1000, y: -1000 })
-  const animationRef = useRef<number | undefined>(undefined)
+  const animationRef = useRef<number | null>(null)
   const startTimeRef = useRef(Date.now())
 
   const baseRgb = useMemo(() => hexToRgb(baseColor), [baseColor])
@@ -218,7 +218,7 @@ export function DotPattern({
   return (
     <div
       ref={containerRef}
-      className={cn("absolute inset-0 overflow-hidden bg-background", className)}
+      className={cn("fixed inset-0 overflow-hidden bg-background", className)}
     >
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
 
@@ -227,12 +227,12 @@ export function DotPattern({
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse at center, transparent 0%, transparent 40%, rgba(10,10,10,0.6) 100%)",
+            "radial-gradient(ellipse at center, rgba(15,23,42,0.14) 0%, rgba(15,23,42,0.08) 40%, rgba(10,10,10,0.6) 100%)",
         }}
       />
 
       {/* Content layer */}
-      {children && <div className="relative z-10">{children}</div>}
+      {children && <div className="relative z-10 h-full w-full">{children}</div>}
     </div>
   )
 }

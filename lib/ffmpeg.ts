@@ -16,6 +16,8 @@ let _ffmpeg:
     })
   | null = null;
 
+let _progressHandler: ((p: any) => void) | null = null;
+
 const MIME_BY_EXT: Record<string, string> = {
   jpg: "image/jpeg",
   jpeg: "image/jpeg",
@@ -105,13 +107,18 @@ export async function convert(
     onProgress?.({ progress: Math.max(0, Math.min(100, pct)), time: p?.time });
   };
 
-  _ffmpeg.off("progress", handleProgress as any);
-  _ffmpeg.on("progress", handleProgress as any);
+  // Ensure we don't accumulate multiple listeners between conversions
+  if (_progressHandler) {
+    _ffmpeg.off("progress", _progressHandler as any);
+  }
+  _progressHandler = handleProgress;
+  _ffmpeg.on("progress", _progressHandler as any);
 
   await _ffmpeg.writeFile(inputName, await fetchFile(file));
 
   // Basic conversion: input → output (codec defaults based on container/ext)
-  await _ffmpeg.exec(["-i", inputName, outputName]);
+  // -y forces overwrite if a previous run left files behind.
+  await _ffmpeg.exec(["-y", "-i", inputName, outputName]);
 
   const data = await _ffmpeg.readFile(outputName);
 
