@@ -208,6 +208,7 @@ export function Converter() {
 
                 <div className="flex items-center gap-2">
                   <select
+                   aria-label="Select output format"
                     value={outputFormat}
                     onChange={(e) => setOutputFormat(e.target.value)}
                     className="h-10 rounded-xl border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
