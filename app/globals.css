@@ -45,6 +45,15 @@
   --radius-2xl: calc(var(--radius) + 8px);
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
+  --animate-star-btn: star-btn calc(var(--duration) * 1s) linear infinite;
+  @keyframes star-btn {
+  0% {
+    offset-distance: 0%;
+    }
+  100% {
+    offset-distance: 100%;
+    }
+  }
 }
 
 :root {
@@ -123,4 +132,21 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+/* Ripple Animation */
+
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 0.6;
+  }
+
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+.animate-ripple {
+  animation: ripple 0.6s ease-out forwards;
 }
