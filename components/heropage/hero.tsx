@@ -7,7 +7,14 @@ import { useState } from "react";
 import { useTheme } from "@/components/layout/theme-provider";
 import { StarButton } from "@/components/ui/star-button";
 import ShinyText from "@/components/ui/ShinyText";
-import { BorderBeam } from "@/components/ui/border-beam";
+// import { BorderBeam } from "@/components/ui/border-beam";
+import {
+  CursorCard,
+  CursorCardsContainer,
+} from "@/components/ui/cursor-cards";
+
+
+
 
 /* ---------------- Cards Data ---------------- */
 
@@ -93,20 +100,15 @@ export default function Hero() {
   const lightColor =
     theme === "dark" ? "#FAFAFA" : "#FF2056";
 
+  // ✅ Theme-safe ShinyText colors
+  const shinyBaseColor = theme === "dark" ? "#71717a" : "#111827";
+  const shinyShineColor = "#ffffff";
+
   return (
-    <div className="flex w-full flex-col items-center gap-8 text-center">
+    <div className="flex w-full flex-col items-center gap-8 px-4 pt-16 sm:pt-26 text-center">
       {/* ================= Header ================= */}
       <div className="space-y-4">
-        {/* Badge */}
-        <motion.div
-          initial={{ opacity: 0, y: -8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-          className="inline-flex items-center gap-2 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-400 ring-1 ring-emerald-500/30"
-        >
-          <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_12px_rgba(52,211,153,0.8)]" />
-          Engine ready • Local conversion
-        </motion.div>
+        
 
         {/* Title */}
         <motion.h1
@@ -115,12 +117,13 @@ export default function Hero() {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="text-balance text-3xl font-semibold tracking-tight text-foreground sm:text-4xl"
         >
+          {/* ✅ ShinyText now uses dynamic theme-safe colors */}
           <ShinyText
             text="✨ Convert your media in seconds."
             speed={2}
             delay={0}
-            color="#b5b5b5"
-            shineColor="#ffffff"
+            color={shinyBaseColor}
+            shineColor={shinyShineColor}
             spread={120}
             direction="left"
             yoyo={false}
@@ -132,6 +135,8 @@ export default function Hero() {
         {/* Description */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
+          whileTap={{ scale: 0.95 }}
+          // whileHover={{ scale: 1.05, color: "#EEEEEE" }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
           className="max-w-xl text-balance text-sm text-muted-foreground sm:text-base"
@@ -139,7 +144,13 @@ export default function Hero() {
           Your files, your browser. Convert images, audio, and video with zero
           server uploads and total privacy. Unlimited, secure, and instant with{" "}
           <span className="font-semibold text-emerald-600 hover:text-emerald-400 dark:text-primary">
-            Convert-neo
+            <Link 
+              href="/" 
+              className=" hover:underline font-semibold text-emerald-600 transition-colors hover:text-emerald-400 dark:text-primary"
+            >
+              Convert-neo 😍
+              
+            </Link>
           </span>
           .
         </motion.p>
@@ -195,30 +206,56 @@ export default function Hero() {
         </motion.div>
       </div>
 
-      {/* ================= Cards ================= */}
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.35 }}
-        className="grid w-full max-w-3xl gap-4 sm:grid-cols-3"
-      >
-        {howItWorksCards.map((card) => (
-          <div
-            key={card.title}
-            className="relative overflow-hidden rounded-2xl border border-border/60 bg-card/70 p-[1px]"
-          >
-            <div className="relative z-10 h-full rounded-2xl bg-background/95 px-4 py-5 text-left shadow-sm">
-              <h3 className="mb-1 text-sm font-semibold text-foreground">
-                {card.title}
-              </h3>
-
-              <p className="text-xs text-muted-foreground">
-                {card.body}
-              </p>
-            </div>
+      {/* ================= How It Works Cards ================= */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.35 }}
+          className="w-full max-w-5xl"
+        >
+          <div className="mb-8 text-center">
+            <h2 className="text-2xl font-stretch-75% tracking-tight text-foreground sm:text-3xl uppercase">
+              <span className="bg-gradient-to-r from-emerald-400 via-sky-500 to-pink-500 bg-clip-text text-transparent animate-text-gradient">
+                How to Convert
+              </span>
+            </h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Three simple steps to process your files locally.
+            </p>
           </div>
-        ))}
-      </motion.div>
+          <CursorCardsContainer className="grid gap-6 sm:grid-cols-3">
+            {howItWorksCards.map((card) => (
+              <CursorCard
+                key={card.title}
+                borderColor={theme === "dark" ? "#262626" : "#e5e5e5"}
+                className="
+                  h-full
+                  rounded-2xl
+                  p-6
+                  bg-background/90
+                  backdrop-blur
+                  shadow-md
+                  transition-all
+                  duration-300
+                "
+              >
+                <div className="flex h-full flex-col justify-between">
+                  <div>
+                    <h3 className="mb-2 text-sm font-semibold text-foreground">
+                      {card.title}
+                    </h3>
+
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      {card.body}
+                    </p>
+                  </div>
+                </div>
+              </CursorCard>
+            ))}
+          </CursorCardsContainer>
+        </motion.div>
+
+
     </div>
   );
 }

@@ -20,6 +20,8 @@
     "hooks": "@/hooks"
   },
   "registries": {
-    "@react-bits": "https://reactbits.dev/r/{name}.json"
+    "@react-bits": "https://reactbits.dev/r/{name}.json",
+    "@tailark": "https://tailark.com/r/{name}.json",
+    "@shadcnuikit": "https://shadcnuikit.com/r/{name}.json"
   }
 }
