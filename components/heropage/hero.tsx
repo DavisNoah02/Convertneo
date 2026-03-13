@@ -212,9 +212,9 @@ export default function Hero() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.35 }}
-          className="w-full max-w-5xl"
+          className="w-full max-w-5xl py-8 md:py-14"
         >
-          <div className="mb-8 text-center">
+          <div className="mb-8 text-center ">
             <h2 className="text-2xl font-stretch-75% tracking-tight text-foreground sm:text-3xl uppercase">
               <span className="bg-gradient-to-r from-emerald-400 via-sky-500 to-pink-500 bg-clip-text text-transparent animate-text-gradient">
                 How to Convert

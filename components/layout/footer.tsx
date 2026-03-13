@@ -96,7 +96,7 @@ export default function FooterSection() {
     <TooltipProvider delayDuration={300}>
       <footer className="bg-transparent py-6">
         <div className="mx-auto max-w-5xl px-6">
-          <div className="flex flex-col items-center justify-between gap-4 text-sm md:flex-row">
+          <div className="flex flex-col items-center justify-between gap-6 text-sm md:flex-row">
 
             <span className="text-zinc-500 dark:text-zinc-400">
               © {new Date().getFullYear()} Convert-neo, All rights reserved
