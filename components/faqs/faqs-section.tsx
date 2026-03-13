@@ -33,9 +33,9 @@ export default function FAQsTwo() {
     ]
 
     return (
-        <section className="py-16 md:py-24">
+        <section className="py-16 md:py-24  dark:bg-transparent">
             <div className="mx-auto max-w-5xl px-4 md:px-6">
-                <div className="mx-auto max-w-xl text-center">
+                <div className="mx-auto max-w-xl  text-center">
                     <h2 className="text-balance text-3xl font-bold md:text-4xl lg:text-5xl">
                         Frequently Asked Questions
                     </h2>
@@ -44,11 +44,11 @@ export default function FAQsTwo() {
                     </p>
                 </div>
 
-                <div className="mx-auto mt-12 max-w-xl">
+                <div className="mx-auto mt-12 max-w-xl ">
                     <Accordion
                         type="single"
                         collapsible
-                        className="bg-card ring-muted w-full rounded-2xl border px-8 py-3 shadow-sm ring-4 dark:ring-0">
+                        className="bg-white/30 dark:bg-card ring-muted w-full rounded-2xl px-8 py-3 shadow-sm ring-1 dark:ring-0">
 
                         {faqItems.map((item) => (
                             <AccordionItem

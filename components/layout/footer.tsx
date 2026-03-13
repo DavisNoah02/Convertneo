@@ -44,7 +44,8 @@ function NoahHoverCard() {
         className={`
           absolute bottom-full left-1/2 mb-3 -translate-x-1/2
           w-56 rounded-xl border border-zinc-200 dark:border-zinc-700
-          bg-white dark:bg-zinc-900
+          bg-neutral-100/80 dark:bg-zinc-900
+          backdrop-blur-md
           shadow-lg dark:shadow-zinc-950/50
           p-4 z-50
           transition-all duration-200
@@ -71,7 +72,7 @@ function NoahHoverCard() {
             href="https://noa-dave.vercel.app/"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-1 rounded-md bg-zinc-100 dark:bg-zinc-800 px-2 py-1 text-center text-xs text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors duration-150"
+            className="flex-1 rounded-md bg-neutral-200/70 dark:bg-zinc-800 px-2 py-1 text-center text-xs text-zinc-700 dark:text-zinc-300 hover:bg-neutral-300/70 dark:hover:bg-zinc-700 transition-colors duration-150"
           >
             Portfolio
           </a>
@@ -79,12 +80,12 @@ function NoahHoverCard() {
             href="https://github.com/DavisNoah02"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-1 rounded-md bg-zinc-100 dark:bg-zinc-800 px-2 py-1 text-center text-xs text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors duration-150"
+            className="flex-1 rounded-md bg-neutral-200/70 dark:bg-zinc-800 px-2 py-1 text-center text-xs text-zinc-700 dark:text-zinc-300 hover:bg-neutral-300/70 dark:hover:bg-zinc-700 transition-colors duration-150"
           >
             GitHub
           </a>
         </div>
-        <div className="absolute -bottom-[5px] left-1/2 -translate-x-1/2 h-2.5 w-2.5 rotate-45 rounded-sm border-r border-b border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900" />
+        <div className="absolute -bottom-[5px] left-1/2 -translate-x-1/2 h-2.5 w-2.5 rotate-45 rounded-sm border-r border-b border-zinc-200 dark:border-zinc-700 bg-neutral-100 dark:bg-zinc-900" />
       </div>
     </span>
   )
@@ -93,7 +94,7 @@ function NoahHoverCard() {
 export default function FooterSection() {
   return (
     <TooltipProvider delayDuration={300}>
-      <footer className="border-t border-zinc-200 dark:border-zinc-800 bg-transparent py-6">
+      <footer className="bg-transparent py-6">
         <div className="mx-auto max-w-5xl px-6">
           <div className="flex flex-col items-center justify-between gap-4 text-sm md:flex-row">
 
@@ -107,7 +108,7 @@ export default function FooterSection() {
             </span>
 
             {/* Split button: Star | Fork */}
-            <div className="flex items-stretch overflow-hidden rounded-md border border-zinc-300 dark:border-zinc-700 text-sm bg-white dark:bg-zinc-900 shadow-sm">
+            <div className="flex items-stretch overflow-hidden rounded-md border border-zinc-300 dark:border-zinc-700 text-sm bg-neutral-200/40 dark:bg-zinc-900 shadow-sm">
 
               {/* Star */}
               <Tooltip>
@@ -119,7 +120,7 @@ export default function FooterSection() {
                     className="group flex items-center gap-1.5 px-3 py-1.5 whitespace-nowrap
                       text-zinc-600 dark:text-zinc-400
                       hover:text-yellow-500 dark:hover:text-yellow-400
-                      hover:bg-zinc-100 dark:hover:bg-zinc-800
+                      hover:bg-neutral-200/70 dark:hover:bg-zinc-800
                       transition-all duration-150"
                   >
                     <svg
@@ -151,7 +152,7 @@ export default function FooterSection() {
                     className="group flex items-center gap-1.5 px-3 py-1.5 whitespace-nowrap
                       text-zinc-600 dark:text-zinc-400
                       hover:text-emerald-600 dark:hover:text-emerald-400
-                      hover:bg-zinc-100 dark:hover:bg-zinc-800
+                      hover:bg-neutral-200/70 dark:hover:bg-zinc-800
                       transition-all duration-150"
                   >
                     <svg

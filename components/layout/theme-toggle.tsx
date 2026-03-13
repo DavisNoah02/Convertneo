@@ -8,9 +8,9 @@ export default function ThemeToggle() {
   const isDark = theme === "dark";
 
   return (
-    <div className="fixed right-4 top-4 z-50 flex items-center gap-2 rounded-full border bg-background/80 px-3 py-1 text-xs text-muted-foreground shadow-sm backdrop-blur">
+    <div className="fixed right-4 top-4 z-50 flex items-center gap-2   px-3 py-1 text-xs text-muted-foreground ">
       <span className="hidden text-[11px] font-medium sm:inline">
-        {isDark ? "Dark" : "Light"} mode
+        
       </span>
       <button
         type="button"

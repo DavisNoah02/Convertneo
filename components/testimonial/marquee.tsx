@@ -20,7 +20,7 @@ const items = [
     title: "Digital Marketer",
     image:
       "https://cdn.badtz-ui.com/images/components/avatar-proof/avatar-3.webp",
-    body: "I use Convert-neo daily for image and audio conversions. It’s fast, clean, and doesn’t bombard me with ads.",
+    body: "I use Convert-neo daily for image and audio conversions. It's fast, clean, and doesn't bombard me with ads.",
   },
   {
     name: "Sarah Njeri",
@@ -33,12 +33,12 @@ const items = [
 
 function TestimonialCard({ item }: { item: (typeof items)[number] }) {
   return (
-    <div className="relative flex h-full w-[20rem] flex-col items-start justify-between rounded-xl border border-neutral-200 bg-white p-4 shadow-sm transition-colors hover:bg-neutral-50 dark:border-neutral-800 dark:bg-neutral-950 dark:hover:bg-neutral-900">
+    <div className="relative flex h-full w-[16rem] sm:w-[20rem] flex-col items-start justify-between rounded-xl border border-neutral-200 bg-white/40 p-4 shadow-sm transition-colors hover:bg-neutral-50 dark:border-neutral-800 dark:bg-neutral-950 dark:hover:bg-neutral-900">
       <div className="mb-4 text-sm text-neutral-500 dark:text-neutral-400">
         {item.body}
       </div>
       <div className="mt-auto flex items-center gap-4">
-        <div className="relative h-10 w-10 overflow-hidden rounded-full">
+        <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full">
           <img
             src={item.image}
             alt={item.name}
@@ -60,10 +60,10 @@ function TestimonialCard({ item }: { item: (typeof items)[number] }) {
 
 export function MarqueeTestimonial() {
   return (
-    <section className="flex flex-col items-center py-16">
+    <section className="flex flex-col items-center py-10 sm:py-16 px-4">
       {/* ===== Title Section ===== */}
       <div className="mb-8 text-center">
-        <h2 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+        <h2 className="text-xl sm:text-2xl lg:text-3xl font-semibold tracking-tight text-foreground">
           Built for privacy. Trusted by creators.
         </h2>
         <p className="mt-3 text-sm text-muted-foreground sm:text-base">
@@ -72,9 +72,21 @@ export function MarqueeTestimonial() {
       </div>
 
       {/* ===== Marquee Section ===== */}
-      <div className="relative max-w-[900px] overflow-hidden">
-        <div className="from-background absolute inset-y-0 left-0 z-10 w-30 bg-gradient-to-r to-transparent" />
-        <div className="from-background absolute inset-y-0 right-0 z-10 w-30 bg-gradient-to-l to-transparent" />
+      <div className="relative w-full max-w-[min(900px,100vw)] overflow-hidden">
+        {/*
+          Use a mask-image instead of pseudo-element gradients so the fade
+          colour always matches the actual page background — no white border.
+        */}
+        <div
+          className="absolute inset-0 z-10 pointer-events-none"
+          style={{
+            maskImage:
+              "linear-gradient(to right, black 0%, transparent 12%, transparent 88%, black 100%)",
+            WebkitMaskImage:
+              "linear-gradient(to right, black 0%, transparent 12%, transparent 88%, black 100%)",
+            background: "transparent",
+          }}
+        />
 
         <Marquee className="py-2" direction="left">
           {[...items, ...items].map((item, index) => (

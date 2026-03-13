@@ -7,6 +7,9 @@ import Footer from "@/components/layout/footer";
 import { ThemeProvider } from "@/components/layout/theme-provider";
 // import ScrollToTop from "@/components/scroll-to-top";
 import ThemeToggle from "@/components/layout/theme-toggle";
+import { LogoImage } from "@/components/logo-image";
+// import { Logo } from "@/components/logo";
+
 
 
 const geistSans = Geist({
@@ -35,8 +38,10 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
       >
         <ThemeProvider>
+          <div className="fixed left-8 top-4 z-50">
+            <LogoImage />
+          </div>
           <ThemeToggle />
-          {/* <Header />  */}
           {children}
           <Footer />
           {/* <ScrollToTop /> */}

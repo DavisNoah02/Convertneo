@@ -115,11 +115,11 @@ export default function Hero() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="text-balance text-3xl font-semibold tracking-tight text-foreground sm:text-4xl"
+          className="text-balance text-4xl font-semibold tracking-tight text-foreground sm:text-5xl"
         >
           {/* ✅ ShinyText now uses dynamic theme-safe colors */}
           <ShinyText
-            text="✨ Convert your media in seconds."
+            text=" Convert your media in seconds."
             speed={2}
             delay={0}
             color={shinyBaseColor}
@@ -129,6 +129,7 @@ export default function Hero() {
             yoyo={false}
             pauseOnHover={false}
             disabled={false}
+            fontFamily="Montserrat"
           />
         </motion.h1>
 
@@ -201,7 +202,7 @@ export default function Hero() {
           </motion.div>
 
           <span className="hidden text-xs text-muted-foreground sm:inline">
-            No uploads • No limits • Free
+            No server-uploads • No limits • Free
           </span>
         </motion.div>
       </div>
@@ -226,20 +227,25 @@ export default function Hero() {
           <CursorCardsContainer className="grid gap-6 sm:grid-cols-3">
             {howItWorksCards.map((card) => (
               <CursorCard
-                key={card.title}
-                borderColor={theme === "dark" ? "#262626" : "#e5e5e5"}
-                className="
-                  h-full
-                  rounded-2xl
-                  p-6
-                  bg-background/90
-                  backdrop-blur
-                  shadow-md
-                  transition-all
-                  duration-300
-                "
-              >
-                <div className="flex h-full flex-col justify-between">
+                  key={card.title}
+                  // Border: Soft "warm white" for light mode, deep "charcoal" for dark mode
+                  borderColor={theme === "dark" ? "rgba(38, 38, 38, 0.4)" : "rgba(200, 195, 195, 0.5)"}
+                  className="
+                    h-full
+                    rounded-2xl
+                    p-6
+                    transition-all
+                    duration-300
+                    bg-neutral-200/40
+                    dark:bg-neutral-900/60
+                    backdrop-blur-md
+                    shadow-sm
+                    hover:shadow-lg
+                    hover:bg-neutral-200/60
+                    dark:hover:bg-slate-800/60
+                  "
+                >
+                <div className="flex h-full flex-col justify-between ">
                   <div>
                     <h3 className="mb-2 text-sm font-semibold text-foreground">
                       {card.title}

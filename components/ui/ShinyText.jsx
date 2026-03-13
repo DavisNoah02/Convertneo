@@ -13,7 +13,8 @@ const ShinyText = ({
   yoyo = false,
   pauseOnHover = false,
   direction = 'left',
-  delay = 0
+  delay = 0,
+  fontFamily = 'inherit'
 }) => {
   const [isPaused, setIsPaused] = useState(false);
   const progress = useMotionValue(0);
@@ -99,7 +100,8 @@ const ShinyText = ({
     backgroundSize: '200% auto',
     WebkitBackgroundClip: 'text',
     backgroundClip: 'text',
-    WebkitTextFillColor: 'transparent'
+    WebkitTextFillColor: 'transparent',
+    fontFamily: fontFamily
   };
 
   return (
