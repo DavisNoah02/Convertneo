@@ -3,12 +3,11 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import {Toaster} from "sonner";
 import Footer from "@/components/layout/footer";
-// import Header from "@/components/layout/header";
 import { ThemeProvider } from "@/components/layout/theme-provider";
 // import ScrollToTop from "@/components/scroll-to-top";
 import ThemeToggle from "@/components/layout/theme-toggle";
 import { LogoImage } from "@/components/logo-image";
-// import { Logo } from "@/components/logo";
+
 
 
 

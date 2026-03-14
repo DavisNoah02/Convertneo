@@ -50,7 +50,6 @@ export default function ContactPage() {
 
   return (
     <AppBackground dotSize={2}>
-
       
     <section className="flex min-h-[80vh] items-center justify-center px-4 py-16">
       <div className="w-full max-w-md">
