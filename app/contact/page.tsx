@@ -8,6 +8,9 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
+import { AppBackground } from '@/components/layout/app-background'
+import Link from "next/link";
+import { ArrowLeft } from 'lucide-react'
 
 /* ---------- Zod schema ---------- */
 const schema = z.object({
@@ -46,9 +49,18 @@ export default function ContactPage() {
   }
 
   return (
+    <AppBackground dotSize={2}>
+
+      
     <section className="flex min-h-[80vh] items-center justify-center px-4 py-16">
       <div className="w-full max-w-md">
-
+    <Link
+          href="/"
+          className="mb-6 inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+            >
+          <ArrowLeft className="h-4 w-4" />
+           Back to home
+      </Link>
         {/* Header */}
         <div className="mb-8 text-center">
           <h1 className="text-3xl font-bold tracking-tight text-foreground">
@@ -132,5 +144,6 @@ export default function ContactPage() {
         </div>
       </div>
     </section>
+    </AppBackground>
   )
 }
