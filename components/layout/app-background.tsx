@@ -1,43 +1,40 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { useMemo } from "react";
-import { DotPattern } from "@/components/ui/dot-pattern";
 import { useTheme } from "@/components/layout/theme-provider";
+import DotGrid from "@/components/ui/DotGrid";
 
 type AppBackgroundProps = {
   children: ReactNode;
-  /** Optional dot size so pages can slightly customize the look */
   dotSize?: number;
 };
 
-export function AppBackground({ children, dotSize = 2 }: AppBackgroundProps) {
+export function AppBackground({ children, dotSize = 5 }: AppBackgroundProps) {
   const { theme } = useTheme();
   const isDark = theme === "dark";
 
-  const dotPatternColors = useMemo(
-    () => ({
-      baseColor: isDark ? "#404040" : "#d4d4d4",
-      glowColor: isDark ? "#22d3ee" : "#10b981",
-    }),
-    [isDark]
-  );
-
   return (
     <div className="relative min-h-screen">
-      <DotPattern
-        key={theme}
-        className="absolute inset-0 -z-10"
-        dotSize={dotSize}
-        gap={24}
-        baseColor={dotPatternColors.baseColor}
-        glowColor={dotPatternColors.glowColor}
-        proximity={120}
-        glowIntensity={1}
-        waveSpeed={0.5}
-      />
+      {/* DotGrid must sit in a positioned container with explicit dimensions */}
+      <div
+        style={{ position: "fixed", inset: 0, zIndex: 0 }}
+        aria-hidden="true"
+      >
+        <DotGrid
+          dotSize={dotSize}
+          gap={16}
+          baseColor={isDark ? "#271E37" : "#e2e8f0"}
+          activeColor={isDark ? "#25e218" : "#10b981"}
+          proximity={120}
+          shockRadius={250}
+          shockStrength={5}
+          resistance={750}
+          returnDuration={1.5}
+        />
+      </div>
+
+      {/* Page content sits above the grid */}
       <div className="relative z-10">{children}</div>
     </div>
   );
 }
-
