@@ -14,6 +14,7 @@ import {
   Trash2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ConversionRecord } from "@/lib/history";
 
 type MediaCategory = "image" | "audio" | "video";
 
@@ -53,7 +54,13 @@ function getExtension(filename: string): string {
   return match ? match[1].toLowerCase() : "";
 }
 
-export function Converter() {
+export function Converter({
+  onConversionComplete,
+  restoreRecord,
+}: {
+  onConversionComplete?: (record: Omit<ConversionRecord, "id">) => void;
+  restoreRecord?: ConversionRecord | null;
+}) {
   const [files, setFiles] = useState<File[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [outputFormat, setOutputFormat] = useState("");
@@ -87,6 +94,12 @@ export function Converter() {
     setOutputFormat(next);
   }, [selectedFile, inputExt, formatOptions, outputFormat]);
 
+  // Restore settings from a history record
+  useEffect(() => {
+    if (!restoreRecord) return;
+    setOutputFormat(restoreRecord.outputFormat);
+  }, [restoreRecord]);
+
   const handleConvert = async () => {
     if (!selectedFile || !outputFormat) return;
     setError(null);
@@ -94,6 +107,7 @@ export function Converter() {
     setIsConverting(true);
     setProgress(0);
     setShowSuccess(false);
+    const startTime = Date.now();
 
     try {
       const blob = await convert(selectedFile, {
@@ -103,6 +117,21 @@ export function Converter() {
       });
       setResultBlob(blob);
       setProgress(100);
+      const conversionTime = Date.now() - startTime;
+      try {
+        onConversionComplete?.({
+          inputFileName: selectedFile.name,
+          inputFormat: inputExt,
+          outputFormat,
+          outputFileName: getOutputFilename(selectedFile.name, outputFormat),
+          fileSize: selectedFile.size,
+          outputSize: blob.size,
+          timestamp: new Date().toISOString(),
+          conversionTime,
+        });
+      } catch {
+        // Silently ignore history save errors
+      }
       toast.success("Conversion complete", {
         description: `${getOutputFilename(
           selectedFile.name,
