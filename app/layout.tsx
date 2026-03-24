@@ -37,7 +37,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
       >
         <ThemeProvider>
-          <div className="fixed left-8 top-4 z-50">
+          <div className="fixed left-4 top-3 z-50 sm:left-8 sm:top-4">
             <LogoImage />
           </div>
           <ThemeToggle />
