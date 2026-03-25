@@ -40,10 +40,10 @@ cd Convertneo
 # 2. Install dependencies
 npm install
 
-# 3. Copy the environment template
+# 3. Create your local environment file from the example
 cp .env.example .env.local
-# Fill in RESEND_API_KEY and CONTACT_EMAIL if you want to test the contact form.
-# The converter works without any environment variables.
+# Open .env.local and fill in RESEND_API_KEY and CONTACT_EMAIL if you want
+# to test the contact form. The converter works without any env vars.
 
 # 4. Start the development server
 npm run dev
@@ -66,7 +66,7 @@ Before making changes, familiarise yourself with the key modules:
 | `hooks/useConversionHistory.ts` | React state wrapper for history |
 | `components/converter/converter.tsx` | Main converter UI |
 | `components/upload-zone/file-upload-zone.tsx` | Drag-and-drop file input |
-| `app/api/contact/routes.tsx` | Server-side email handler |
+| `app/api/contact/route.ts` | Server-side email handler |
 
 See [ARCHITECTURE.md](ARCHITECTURE.md) for a full technical walkthrough.
 
@@ -178,7 +178,7 @@ chore(deps): bump @ffmpeg/ffmpeg to 0.12.16
 
 ## Adding New Formats
 
-To add a new output format, update three places in `lib/ffmpeg.ts` and one in `components/converter/converter.tsx`:
+To add a new output format, update one place in `lib/ffmpeg.ts` and one place in `components/converter/converter.tsx`:
 
 ### 1. `MIME_BY_EXT` in `lib/ffmpeg.ts`
 

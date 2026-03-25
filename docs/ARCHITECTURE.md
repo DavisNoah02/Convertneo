@@ -125,7 +125,7 @@ State is initialised lazily from `loadHistory()` so it is in sync with `localSto
 
 ---
 
-### `app/api/contact/routes.tsx`
+### `app/api/contact/route.ts`
 
 A Next.js Route Handler that accepts `POST /api/contact` requests from the contact form. It validates that `name`, `email`, and `message` are present, then sends an email via the [Resend](https://resend.com) SDK.
 

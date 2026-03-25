@@ -39,6 +39,7 @@ Convertneo runs entirely in the browser using [FFmpeg.wasm](https://ffmpegwasm.n
 ```
 convertneo/
 ├── app/
+│   ├── globals.css              # Global styles — Tailwind v4 imports and CSS theme variables
 │   ├── layout.tsx               # Root layout — fonts, ThemeProvider, Footer, Toaster
 │   ├── page.tsx                 # Landing page — Hero, Testimonials, FAQs
 │   ├── converter/
@@ -47,7 +48,7 @@ convertneo/
 │   │   └── page.tsx             # Contact support form
 │   └── api/
 │       └── contact/
-│           └── routes.tsx       # POST /api/contact — sends email via Resend
+│           └── route.ts         # POST /api/contact — sends email via Resend
 ├── components/
 │   ├── converter/
 │   │   └── converter.tsx        # Core converter UI (upload → select format → convert → download)
@@ -75,8 +76,9 @@ convertneo/
 │   ├── history.ts               # localStorage CRUD — ConversionRecord type and helpers
 │   └── utils.ts                 # cn() Tailwind class merger
 ├── public/                      # Static assets
+├── components.json              # shadcn/ui component configuration
 ├── next.config.ts               # Next.js configuration
-├── tailwind.config.*            # Tailwind configuration
+├── postcss.config.mjs           # PostCSS configuration (Tailwind v4 plugin)
 └── tsconfig.json                # TypeScript configuration
 ```
 
@@ -183,9 +185,3 @@ For other platforms (Netlify, Railway, Docker, etc.) follow the standard Next.js
 ## Contributing
 
 Contributions are welcome. Please read [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) before opening a pull request.
-
----
-
-## License
-
-This project is open source. See [LICENSE](LICENSE) for details.
