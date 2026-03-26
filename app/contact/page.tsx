@@ -12,6 +12,7 @@ import { AppBackground } from '@/components/layout/app-background'
 import Link from "next/link";
 import { ArrowLeft } from 'lucide-react'
 import { toast } from 'sonner'
+import { MotionEffect } from '@/components/ui/motion-highlight'
 
 /* ---------- Zod schema ---------- */
 const schema = z.object({
@@ -54,14 +55,20 @@ export default function ContactPage() {
   return (
     <AppBackground dotSize={2}>
       
-    <section className="flex min-h-[80vh] items-center justify-center px-4 py-16">
+    <MotionEffect
+        fade
+        slide={{ direction: "up", offset: 30 }}
+        blur="5px"
+        transition={{ duration: 0.8, ease: "easeOut" }}
+      >
+    <section className="flex min-h-[80vh] items-center justify-center px-4 py-6">
       <div className="w-full max-w-md">
     <Link
           href="/"
           className="mb-6 inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
             >
           <ArrowLeft className="h-4 w-4" />
-           Back to home
+           Home
       </Link>
         {/* Header */}
         <div className="mb-8 text-center">
@@ -134,6 +141,8 @@ export default function ContactPage() {
         </div>
       </div>
     </section>
+
+    </MotionEffect>
     </AppBackground>
   )
 }

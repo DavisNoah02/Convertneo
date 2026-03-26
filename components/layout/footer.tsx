@@ -136,7 +136,7 @@ export default function FooterSection() {
                   </a>
                 </TooltipTrigger>
                 <TooltipContent side="top" className="text-xs">
-                  ⭐ Give us a star on GitHub!
+                  ⭐ Star on GitHub!
                 </TooltipContent>
               </Tooltip>
 
