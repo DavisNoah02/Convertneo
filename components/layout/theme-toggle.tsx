@@ -15,7 +15,7 @@ export default function ThemeToggle() {
       <button
         type="button"
         onClick={toggleTheme}
-        className="inline-flex h-8 w-8 items-center justify-center rounded-full border bg-card text-foreground shadow-sm transition hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
+        className="inline-flex cursor-pointer h-8 w-8 items-center justify-center rounded-full border bg-card text-foreground shadow-sm transition hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
         // aria-label="Toggle color theme"
       >
         {isDark ? (

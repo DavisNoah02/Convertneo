@@ -94,7 +94,7 @@ function NoahHoverCard() {
 export default function FooterSection() {
   return (
     <TooltipProvider delayDuration={300}>
-      <footer className="bg-transparent py-6">
+      <footer className="relative z-10 bg-transparent py-6">
         <div className="mx-auto max-w-5xl px-6">
           <div className="flex flex-col items-center justify-between gap-6 text-sm md:flex-row">
 

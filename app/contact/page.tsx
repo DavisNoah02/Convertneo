@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button'
 import { AppBackground } from '@/components/layout/app-background'
 import Link from "next/link";
 import { ArrowLeft } from 'lucide-react'
+import { toast } from 'sonner'
 
 /* ---------- Zod schema ---------- */
 const schema = z.object({
@@ -23,7 +24,7 @@ type FormData = z.infer<typeof schema>
 
 /* ---------- Page ---------- */
 export default function ContactPage() {
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+  const [status, setStatus] = useState<'idle' | 'loading'>('idle')
 
   const {
     register,
@@ -41,10 +42,12 @@ export default function ContactPage() {
         body: JSON.stringify(data),
       })
       if (!res.ok) throw new Error()
-      setStatus('success')
+      setStatus('idle')
       reset()
+      toast.success('Message sent!', { description: "We'll be in touch shortly." })
     } catch {
-      setStatus('error')
+      setStatus('idle')
+      toast.error('Failed to send message', { description: 'Something went wrong. Please try again.' })
     }
   }
 
@@ -126,18 +129,6 @@ export default function ContactPage() {
             >
               {status === 'loading' ? 'Sending…' : 'Send message'}
             </Button>
-
-            {/* Feedback */}
-            {status === 'success' && (
-              <p className="text-center text-sm text-emerald-600 dark:text-emerald-400">
-                ✓ Message sent! We&apos;ll be in touch shortly.
-              </p>
-            )}
-            {status === 'error' && (
-              <p className="text-center text-sm text-red-500">
-                Something went wrong. Please try again.
-              </p>
-            )}
 
           </form>
         </div>
