@@ -179,6 +179,10 @@ For other platforms (Netlify, Railway, Docker, etc.) follow the standard Next.js
 |---|---|
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Technical architecture, module responsibilities, and data flow |
 | [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) | Development setup, code style, and pull request workflow |
+| [CHANGELOG.md](CHANGELOG.md) | Release history and notable changes |
+| [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) | Community standards and enforcement guidelines |
+| [SECURITY.md](SECURITY.md) | Security model and vulnerability reporting |
+| [LICENSE](LICENSE) | MIT license |
 
 ---
 
