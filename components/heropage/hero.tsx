@@ -105,7 +105,7 @@ export default function Hero() {
   const shinyShineColor = "#ffffff";
 
   return (
-    <div className="flex w-full flex-col items-center gap-8 px-4 pt-16 sm:pt-26 text-center">
+    <div className="flex w-full flex-col items-center gap-8 px-4 pt-12 sm:pt-16 text-center">
       {/* ================= Header ================= */}
       <div className="space-y-4">
         

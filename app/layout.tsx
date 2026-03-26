@@ -7,6 +7,8 @@ import { ThemeProvider } from "@/components/layout/theme-provider";
 // import ScrollToTop from "@/components/scroll-to-top";
 import ThemeToggle from "@/components/layout/theme-toggle";
 import { LogoImage } from "@/components/logo-image";
+// import Demo from"@/components/layout/demo";
+import BottomDock from "@/components/layout/bottom-dock";
 
 
 
@@ -41,7 +43,9 @@ export default function RootLayout({
             <LogoImage />
           </div>
           <ThemeToggle />
-          {children}
+          <div className="pt-16">{children}</div>
+          {/* <Demo/> */}
+          <BottomDock />
           <Footer />
           {/* <ScrollToTop /> */}
         </ThemeProvider>
