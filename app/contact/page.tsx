@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
@@ -13,15 +12,7 @@ import Link from "next/link";
 import { ArrowLeft } from 'lucide-react'
 import { toast } from 'sonner'
 import { MotionEffect } from '@/components/ui/motion-highlight'
-
-/* ---------- Zod schema ---------- */
-const schema = z.object({
-  name: z.string().min(2, 'Name must be at least 2 characters'),
-  email: z.string().email('Please enter a valid email'),
-  message: z.string().min(10, 'Message must be at least 10 characters'),
-})
-
-type FormData = z.infer<typeof schema>
+import { contactSchema, type ContactFormData } from '@/lib/validations/contact'
 
 /* ---------- Page ---------- */
 export default function ContactPage() {
@@ -32,9 +23,9 @@ export default function ContactPage() {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<FormData>({ resolver: zodResolver(schema) })
+  } = useForm<ContactFormData>({ resolver: zodResolver(contactSchema) })
 
-  async function onSubmit(data: FormData) {
+  async function onSubmit(data: ContactFormData) {
     setStatus('loading')
     try {
       const res = await fetch('/api/contact', {
