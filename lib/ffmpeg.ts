@@ -16,7 +16,7 @@ let _ffmpeg:
     })
   | null = null;
 
-let _progressHandler: ((p: any) => void) | null = null;
+let _progressHandler: ((p: unknown) => void) | null = null;
 
 const MIME_BY_EXT: Record<string, string> = {
   jpg: "image/jpeg",
@@ -101,18 +101,27 @@ export async function convert(
   const inputName = safeName(`input.${inExt || "bin"}`);
   const outputName = safeName(`output.${finalOutExt}`);
 
-  const handleProgress = (p: any) => {
+  const handleProgress = (p: unknown) => {
+    const payload =
+      typeof p === "object" && p !== null
+        ? (p as { progress?: unknown; time?: unknown })
+        : {};
+
+    const rawProgress =
+      typeof payload.progress === "number" ? payload.progress : 0;
+    const time = typeof payload.time === "number" ? payload.time : undefined;
+
     // p.progress is 0..1
-    const pct = typeof p?.progress === "number" ? p.progress * 100 : 0;
-    onProgress?.({ progress: Math.max(0, Math.min(100, pct)), time: p?.time });
+    const pct = rawProgress * 100;
+    onProgress?.({ progress: Math.max(0, Math.min(100, pct)), time });
   };
 
   // Ensure we don't accumulate multiple listeners between conversions
   if (_progressHandler) {
-    _ffmpeg.off("progress", _progressHandler as any);
+    _ffmpeg.off("progress", _progressHandler);
   }
   _progressHandler = handleProgress;
-  _ffmpeg.on("progress", _progressHandler as any);
+  _ffmpeg.on("progress", _progressHandler);
 
   await _ffmpeg.writeFile(inputName, await fetchFile(file));
 
@@ -129,7 +138,7 @@ export async function convert(
   ]);
 
   // Ensure we pass an ArrayBuffer-backed BlobPart (ffmpeg may return SAB-backed views)
-  const u8 = data instanceof Uint8Array ? data : new Uint8Array(data as any);
+  const u8 = toUint8Array(data);
   const copy = new Uint8Array(u8.byteLength);
   copy.set(u8);
 
@@ -151,4 +160,24 @@ export function getOutputFilename(inputName: string, outputFormat: string): stri
 function getExtension(filename: string): string {
   const match = filename.match(/\.([^.]+)$/);
   return match ? match[1].toLowerCase() : "";
+}
+
+function toUint8Array(data: unknown): Uint8Array {
+  if (data instanceof Uint8Array) {
+    return data;
+  }
+
+  if (data instanceof ArrayBuffer) {
+    return new Uint8Array(data);
+  }
+
+  if (ArrayBuffer.isView(data)) {
+    return new Uint8Array(data.buffer, data.byteOffset, data.byteLength);
+  }
+
+  if (typeof data === "string") {
+    return new TextEncoder().encode(data);
+  }
+
+  throw new Error("Unexpected FFmpeg output type");
 }

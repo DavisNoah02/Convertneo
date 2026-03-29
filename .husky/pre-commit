@@ -1,0 +1,10 @@
+#!/bin/sh
+set -e
+
+if [ -z "$(git diff --cached --name-only --diff-filter=ACMR)" ]; then
+	echo "No staged files to check"
+	exit 0
+fi
+
+echo "Running lint-staged checks..."
+npx lint-staged

@@ -30,6 +30,75 @@ const BASE = 48;
 const MAG = 72;
 const DISTANCE = 120;
 
+function DockButton({
+  item,
+  mouseX,
+  active,
+}: {
+  item: DockItem;
+  mouseX: ReturnType<typeof useMotionValue<number>>;
+  active: boolean;
+}) {
+  const ref = useRef<HTMLAnchorElement>(null);
+
+  const distance = useTransform(mouseX, (val) => {
+    const bounds = ref.current?.getBoundingClientRect();
+    if (!bounds) return DISTANCE;
+
+    return val - (bounds.left + bounds.width / 2);
+  });
+
+  const width = useTransform(
+    distance,
+    [-DISTANCE, 0, DISTANCE],
+    [BASE, MAG, BASE]
+  );
+
+  const scale = useSpring(width, {
+    mass: 0.2,
+    stiffness: 200,
+    damping: 15,
+  });
+
+  return (
+    <motion.div style={{ width: scale }}>
+      <Link
+        ref={ref}
+        href={item.href}
+        className="group relative flex h-[58px] cursor-pointer flex-col items-center justify-center rounded-[12px] px-1"
+      >
+        {/* Icon */}
+        <motion.div
+          whileHover={{ y: -4, scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          className={[
+            "transition-colors duration-200 group-hover:text-emerald-500 dark:group-hover:text-emerald-400",
+            active
+              ? "text-zinc-900 dark:text-white"
+              : "text-zinc-500 dark:text-zinc-400",
+          ].join(" ")}
+        >
+          {item.icon}
+        </motion.div>
+
+        {/* Label */}
+        <span className="text-[10px] opacity-70">{item.label}</span>
+
+        {/* Active pip */}
+        {active && (
+          <span
+            className="absolute bottom-[6px] h-[4px] w-[4px] rounded-full bg-emerald-500"
+            style={{
+              animation:
+                "pip-in 0.25s cubic-bezier(.34,1.56,.64,1) both",
+            }}
+          />
+        )}
+      </Link>
+    </motion.div>
+  );
+}
+
 export default function BottomDock() {
   const pathname = usePathname();
   const mouseX = useMotionValue(Infinity);
@@ -81,71 +150,14 @@ export default function BottomDock() {
               : "shadow-[0_2px_8px_rgba(0,0,0,.06),0_12px_32px_rgba(0,0,0,.10)]",
           ].join(" ")}
         >
-          {items.map((item) => {
-            const ref = useRef<HTMLAnchorElement>(null);
-            const active = isActive(item.href);
-
-            // distance from cursor → center of icon
-            const distance = useTransform(mouseX, (val) => {
-              const bounds = ref.current?.getBoundingClientRect();
-              if (!bounds) return DISTANCE;
-
-              return val - (bounds.left + bounds.width / 2);
-            });
-
-            // map distance → size
-            const width = useTransform(
-              distance,
-              [-DISTANCE, 0, DISTANCE],
-              [BASE, MAG, BASE]
-            );
-
-            const scale = useSpring(width, {
-              mass: 0.2,
-              stiffness: 200,
-              damping: 15,
-            });
-
-            return (
-              <motion.div key={item.href} style={{ width: scale }}>
-                <Link
-                  ref={ref}
-                  href={item.href}
-                  className="group relative flex h-[58px] cursor-pointer flex-col items-center justify-center rounded-[12px] px-1"
-                >
-                  
-
-                  {/* Icon */}
-                  <motion.div
-                    whileHover={{ y: -4, scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                    className={[
-                      "transition-colors duration-200 group-hover:text-emerald-500 dark:group-hover:text-emerald-400",
-                      active
-                        ? "text-zinc-900 dark:text-white"
-                        : "text-zinc-500 dark:text-zinc-400",
-                    ].join(" ")}
-                  >
-                    {item.icon}
-                  </motion.div>
-
-                  {/* Label */}
-                  <span className="text-[10px] opacity-70">{item.label}</span>
-
-                  {/* Active pip */}
-                  {active && (
-                    <span
-                      className="absolute bottom-[6px] h-[4px] w-[4px] rounded-full bg-emerald-500"
-                      style={{
-                        animation:
-                          "pip-in 0.25s cubic-bezier(.34,1.56,.64,1) both",
-                      }}
-                    />
-                  )}
-                </Link>
-              </motion.div>
-            );
-          })}
+          {items.map((item) => (
+            <DockButton
+              key={item.href}
+              item={item}
+              mouseX={mouseX}
+              active={isActive(item.href)}
+            />
+          ))}
         </motion.div>
       </nav>
     </>

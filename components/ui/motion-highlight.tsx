@@ -36,8 +36,7 @@ type MotionEffectProps = HTMLMotionProps<"div"> & {
     | boolean
 }
 
-function MotionEffect({
-  ref,
+const MotionEffect = React.forwardRef<HTMLDivElement, MotionEffectProps>(function MotionEffect({
   children,
   className,
   transition = { type: "spring", stiffness: 200, damping: 20 },
@@ -50,9 +49,20 @@ function MotionEffect({
   fade = false,
   zoom = false,
   ...props
-}: MotionEffectProps) {
+}: MotionEffectProps, ref) {
   const localRef = React.useRef<HTMLDivElement>(null)
-  React.useImperativeHandle(ref as any, () => localRef.current as HTMLDivElement)
+  const setRefs = React.useCallback(
+    (node: HTMLDivElement | null) => {
+      localRef.current = node
+
+      if (typeof ref === "function") {
+        ref(node)
+      } else if (ref) {
+        ref.current = node
+      }
+    },
+    [ref]
+  )
 
   const inViewResult = useInView(localRef, {
     once: inViewOnce,
@@ -94,7 +104,7 @@ function MotionEffect({
         data-slot="motion-effect"
         exit="hidden"
         initial="hidden"
-        ref={localRef}
+        ref={setRefs}
         transition={{
           ...transition,
           delay: (transition?.delay ?? 0) + delay,
@@ -103,13 +113,13 @@ function MotionEffect({
           hidden: hiddenVariant,
           visible: visibleVariant,
         }}
-        {...(props as any)}
+        {...props}
       >
         {children}
       </motion.div>
     </AnimatePresence>
   )
-}
+})
 
 export { MotionEffect, type MotionEffectProps }
 

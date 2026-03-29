@@ -42,6 +42,8 @@ const FORMAT_OPTIONS: Record<MediaCategory, { value: string; label: string }[]> 
   ],
 };
 
+const EMPTY_FORMAT_OPTIONS: { value: string; label: string }[] = [];
+
 function getCategory(file: File): MediaCategory {
   if (file.type.startsWith("image/")) return "image";
   if (file.type.startsWith("audio/")) return "audio";
@@ -68,11 +70,13 @@ export function Converter({
   const [resultBlob, setResultBlob] = useState<Blob | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isConverting, setIsConverting] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
 
   const selectedFile = files[selectedIndex] ?? null;
   const category = selectedFile ? getCategory(selectedFile) : null;
-  const formatOptions = category ? FORMAT_OPTIONS[category] : [];
+  const formatOptions = useMemo(
+    () => (category ? FORMAT_OPTIONS[category] : EMPTY_FORMAT_OPTIONS),
+    [category]
+  );
   const inputExt = selectedFile ? getExtension(selectedFile.name) : "";
 
   const handleFilesSelected = useCallback((newFiles: File[]) => {
@@ -82,7 +86,6 @@ export function Converter({
     setResultBlob(null);
     setError(null);
     setProgress(null);
-    setShowSuccess(false);
   }, []);
 
   // Auto-pick a default output format after upload (different from input ext)
@@ -106,7 +109,6 @@ export function Converter({
     setResultBlob(null);
     setIsConverting(true);
     setProgress(0);
-    setShowSuccess(false);
     const startTime = Date.now();
 
     try {
@@ -258,7 +260,6 @@ export function Converter({
                       setProgress(null);
                       setResultBlob(null);
                       setError(null);
-                      setShowSuccess(false);
                     }}
                     className="inline-flex h-10 w-10 items-center justify-center rounded-xl border bg-background text-muted-foreground hover:text-destructive hover:bg-destructive/10"
                     aria-label="Clear files"
