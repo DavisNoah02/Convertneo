@@ -33,13 +33,29 @@ export default function ContactPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       })
-      if (!res.ok) throw new Error()
+
+      const payload = (await res.json().catch(() => null)) as
+        | { error?: string; warning?: string }
+        | null
+
+      if (!res.ok) {
+        throw new Error(payload?.error ?? 'Failed to send message')
+      }
+
       setStatus('idle')
       reset()
-      toast.success('Message sent!', { description: "We'll be in touch shortly." })
-    } catch {
+      if (payload?.warning) {
+        toast.success('Message saved!', { description: payload.warning })
+      } else {
+        toast.success('Message sent!', { description: "We'll be in touch shortly." })
+      }
+    } catch (error) {
       setStatus('idle')
-      toast.error('Failed to send message', { description: 'Something went wrong. Please try again.' })
+      const description =
+        error instanceof Error
+          ? error.message
+          : 'Something went wrong. Please try again.'
+      toast.error('Failed to send message', { description })
     }
   }
 

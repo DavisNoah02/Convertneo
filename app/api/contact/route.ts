@@ -57,32 +57,72 @@ export async function POST(req: Request) {
 
   const { name, email, message } = parsed.data;
 
-  await saveContactMessage({
-    name,
-    email,
-    message,
-    createdAt: new Date().toISOString(),
-    ipAddress: ip,
-    userAgent: req.headers.get("user-agent") || undefined,
-  });
+  try {
+    await saveContactMessage({
+      name,
+      email,
+      message,
+      ipAddress: ip,
+      userAgent: req.headers.get("user-agent") || undefined,
+    });
+  } catch {
+    return NextResponse.json({ error: "Failed to save message" }, { status: 500 });
+  }
 
   const contactEmail = process.env.CONTACT_EMAIL;
-  if (!contactEmail || !process.env.RESEND_API_KEY) {
+  const resendApiKey = process.env.RESEND_API_KEY;
+
+  if (!contactEmail || !resendApiKey) {
     return NextResponse.json(
-      { error: "Email service is not configured" },
-      { status: 500 },
+      {
+        success: true,
+        message: "Message saved",
+        warning: "Message stored, but email notifications are not configured.",
+        rateLimit: {
+          remaining: rateLimit.remaining,
+        },
+      },
+      {
+        status: 201,
+        headers: {
+          "X-RateLimit-Remaining": String(rateLimit.remaining),
+        },
+      },
     );
   }
 
-  const { error } = await resend.emails.send({
-    from: "Convert-neo <onboarding@resend.dev>",
-    to: contactEmail,
-    subject: `New message from ${name}`,
-    text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
-  });
+  let emailFailed = false;
 
-  if (error) {
-    return NextResponse.json({ error: "Failed to send email" }, { status: 500 });
+  try {
+    const { error } = await resend.emails.send({
+      from: "Convert-neo <onboarding@resend.dev>",
+      to: contactEmail,
+      subject: `New message from ${name}`,
+      text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
+    });
+
+    emailFailed = Boolean(error);
+  } catch {
+    emailFailed = true;
+  }
+
+  if (emailFailed) {
+    return NextResponse.json(
+      {
+        success: true,
+        message: "Message saved",
+        warning: "Message stored, but email delivery failed.",
+        rateLimit: {
+          remaining: rateLimit.remaining,
+        },
+      },
+      {
+        status: 201,
+        headers: {
+          "X-RateLimit-Remaining": String(rateLimit.remaining),
+        },
+      },
+    );
   }
 
   return NextResponse.json(
@@ -94,6 +134,7 @@ export async function POST(req: Request) {
       },
     },
     {
+      status: 201,
       headers: {
         "X-RateLimit-Remaining": String(rateLimit.remaining),
       },

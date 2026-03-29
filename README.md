@@ -104,6 +104,9 @@ npm install
 Create a `.env.local` file in the project root:
 
 ```env
+# PostgreSQL connection string (local dev example)
+DATABASE_URL=postgresql://USER:PASSWORD@localhost:5432/convertneo?schema=public
+
 # Resend API key — required for the /contact form to send emails
 RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxx
 
@@ -126,6 +129,22 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 ```bash
 npm run build
 npm start
+```
+
+### Database Commands (Prisma)
+
+```bash
+# Generate Prisma client
+npm run db:generate
+
+# Create/apply local migrations
+npm run db:migrate -- --name your_migration_name
+
+# Open DB GUI
+npm run db:studio
+
+# Apply migrations in production
+npm run db:deploy
 ```
 
 ### Lint
@@ -168,6 +187,13 @@ npx vercel
 ```
 
 Add `RESEND_API_KEY` and `CONTACT_EMAIL` as environment variables in your Vercel project settings.
+
+For contact persistence, also add `DATABASE_URL` in production.
+
+Recommended production deployment order:
+1. Set `DATABASE_URL`, `RESEND_API_KEY`, and `CONTACT_EMAIL` in platform secrets.
+2. Run `npm run db:deploy` during deploy/startup.
+3. Start the app.
 
 For other platforms (Netlify, Railway, Docker, etc.) follow the standard Next.js deployment guide: [nextjs.org/docs/deployment](https://nextjs.org/docs/app/building-your-application/deploying).
 
