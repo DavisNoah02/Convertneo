@@ -9,6 +9,8 @@ on:
 jobs:
   validate:
     runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/convertneo?schema=public
 
     steps:
       - name: Checkout
@@ -17,7 +19,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
 
       - name: Install dependencies
@@ -25,13 +27,9 @@ jobs:
 
       - name: Generate Prisma client
         run: npm run db:generate
-        env:
-          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/convertneo?schema=public
 
       - name: Lint
         run: npm run lint
 
       - name: Build
         run: npm run build
-        env:
-          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/convertneo?schema=public
