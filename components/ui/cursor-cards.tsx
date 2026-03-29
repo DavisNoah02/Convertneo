@@ -76,11 +76,9 @@ function useCardActivation(
 ) {
   const localMouseX = useMotionValue(-illuminationRadius)
   const localMouseY = useMotionValue(-illuminationRadius)
-  const [isCardActive, setIsCardActive] = React.useState(false)
 
   useEffect(() => {
     if (!elementRef.current || !isWithinRange) {
-      setIsCardActive(false)
       localMouseX.set(-illuminationRadius)
       localMouseY.set(-illuminationRadius)
       return
@@ -95,8 +93,6 @@ function useCardActivation(
       globalMouseY >= rect.top - extendedProximity &&
       globalMouseY <= rect.bottom + extendedProximity
 
-    setIsCardActive(isNearCard)
-
     if (isNearCard) {
       localMouseX.set(globalMouseX - rect.left)
       localMouseY.set(globalMouseY - rect.top)
@@ -105,6 +101,7 @@ function useCardActivation(
       localMouseY.set(-illuminationRadius)
     }
   }, [
+    elementRef,
     globalMouseX,
     globalMouseY,
     isWithinRange,
@@ -113,7 +110,7 @@ function useCardActivation(
     localMouseY,
   ])
 
-  return { localMouseX, localMouseY, isCardActive }
+  return { localMouseX, localMouseY }
 }
 
 export function CursorCardsContainer({
@@ -158,13 +155,14 @@ export function CursorCard({
   isWithinRange = false,
 }: InternalCursorCardProps) {
   const elementRef = useRef<HTMLDivElement>(null)
-  const { localMouseX, localMouseY, isCardActive } = useCardActivation(
+  const { localMouseX, localMouseY } = useCardActivation(
     elementRef,
     globalMouseX,
     globalMouseY,
     isWithinRange,
     illuminationRadius
   )
+  const isCardActive = isWithinRange
 
   const gradientBackground = useMotionTemplate`
     radial-gradient(${illuminationRadius}px circle at ${localMouseX}px ${localMouseY}px,

@@ -42,6 +42,7 @@ export default function RootLayout({
           <div className="fixed left-8 top-4 z-50">
             <LogoImage />
           </div>
+          
           <ThemeToggle />
           <div className="pt-16">{children}</div>
           {/* <Demo/> */}

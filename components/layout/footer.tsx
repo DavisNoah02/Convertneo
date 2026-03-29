@@ -1,5 +1,6 @@
 "use client"
 
+import Image from 'next/image'
 import Link from 'next/link'
 import { useState, useRef } from 'react'
 import {
@@ -53,10 +54,11 @@ function NoahHoverCard() {
         `}
       >
         <div className="mb-3 h-12 w-12 overflow-hidden rounded-full ring-2 ring-zinc-200 dark:ring-zinc-700">
-          <img
+          <Image
             src="/profile.png"
             alt="noah-dave"
-            onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }}
+            width={48}
+            height={48}
             className="h-full w-full object-cover"
           />
         </div>

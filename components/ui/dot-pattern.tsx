@@ -55,7 +55,8 @@ export function DotPattern({
   const dotsRef = useRef<Dot[]>([])
   const mouseRef = useRef({ x: -1000, y: -1000 })
   const animationRef = useRef<number | null>(null)
-  const startTimeRef = useRef(Date.now())
+  const drawRef = useRef<() => void>(() => {})
+  const startTimeRef = useRef(0)
 
   const baseRgb = useMemo(() => hexToRgb(baseColor), [baseColor])
   const glowRgb = useMemo(() => hexToRgb(glowColor), [glowColor])
@@ -108,7 +109,7 @@ export function DotPattern({
 
     const { x: mx, y: my } = mouseRef.current
     const proxSq = proximity * proximity
-    const time = (Date.now() - startTimeRef.current) * 0.001 * waveSpeed
+    const time = (performance.now() - startTimeRef.current) * 0.001 * waveSpeed
 
     for (const dot of dotsRef.current) {
       const dx = dot.x - mx
@@ -164,7 +165,7 @@ export function DotPattern({
       ctx.fill()
     }
 
-    animationRef.current = requestAnimationFrame(draw)
+    animationRef.current = requestAnimationFrame(drawRef.current)
   }, [proximity, baseRgb, glowRgb, dotSize, glowIntensity, waveSpeed])
 
   useEffect(() => {
@@ -178,6 +179,14 @@ export function DotPattern({
 
     return () => ro.disconnect()
   }, [buildGrid])
+
+  useEffect(() => {
+    startTimeRef.current = performance.now()
+  }, [])
+
+  useEffect(() => {
+    drawRef.current = draw
+  }, [draw])
 
   useEffect(() => {
     animationRef.current = requestAnimationFrame(draw)
