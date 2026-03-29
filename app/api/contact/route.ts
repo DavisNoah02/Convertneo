@@ -5,8 +5,6 @@ import { saveContactMessage } from "@/lib/server/contact-message-store";
 import { getClientIp, rateLimitByKey } from "@/lib/server/rate-limit";
 import { contactSchema } from "@/lib/validations/contact";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 const CONTACT_RATE_LIMIT = {
   limit: 5,
   windowMs: 10 * 60 * 1000,
@@ -94,6 +92,8 @@ export async function POST(req: Request) {
   let emailFailed = false;
 
   try {
+    const resend = new Resend(resendApiKey);
+
     const { error } = await resend.emails.send({
       from: "Convert-neo <onboarding@resend.dev>",
       to: contactEmail,
