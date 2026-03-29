@@ -5,7 +5,7 @@ import {
   useContext,
   useEffect,
   useMemo,
-  useState,
+  useSyncExternalStore,
   type ReactNode,
 } from "react";
 
@@ -18,19 +18,55 @@ type ThemeContextValue = {
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
-function getPreferredTheme(): Theme {
-  if (typeof window === "undefined") return "light";
+const STORAGE_KEY = "theme";
+const THEME_MEDIA_QUERY = "(prefers-color-scheme: dark)";
 
-  const stored = window.localStorage.getItem("theme");
-  if (stored === "light" || stored === "dark") {
+function readStoredTheme(): Theme | null {
+  if (typeof window === "undefined") return null;
+
+  const stored = window.localStorage.getItem(STORAGE_KEY);
+  return stored === "light" || stored === "dark" ? stored : null;
+}
+
+function getPreferredTheme(): Theme {
+  const stored = readStoredTheme();
+  if (stored) {
     return stored;
   }
 
+  if (typeof window === "undefined") return "light";
+
   const prefersDark = window.matchMedia?.(
-    "(prefers-color-scheme: dark)",
+    THEME_MEDIA_QUERY,
   ).matches;
 
   return prefersDark ? "dark" : "light";
+}
+
+function subscribeToTheme(callback: () => void) {
+  if (typeof window === "undefined") {
+    return () => undefined;
+  }
+
+  const mediaQuery = window.matchMedia(THEME_MEDIA_QUERY);
+  const handleChange = () => callback();
+
+  window.addEventListener("storage", handleChange);
+  window.addEventListener("theme-change", handleChange);
+  mediaQuery.addEventListener("change", handleChange);
+
+  return () => {
+    window.removeEventListener("storage", handleChange);
+    window.removeEventListener("theme-change", handleChange);
+    mediaQuery.removeEventListener("change", handleChange);
+  };
+}
+
+function persistTheme(theme: Theme) {
+  if (typeof window === "undefined") return;
+
+  window.localStorage.setItem(STORAGE_KEY, theme);
+  window.dispatchEvent(new Event("theme-change"));
 }
 
 function applyTheme(theme: Theme) {
@@ -43,12 +79,14 @@ function applyTheme(theme: Theme) {
   } else {
     root.classList.remove("dark");
   }
-
-  window.localStorage.setItem("theme", theme);
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>(() => getPreferredTheme());
+  const theme = useSyncExternalStore<Theme>(
+    subscribeToTheme,
+    getPreferredTheme,
+    () => "light",
+  );
 
   useEffect(() => {
     applyTheme(theme);
@@ -58,7 +96,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     () => ({
       theme,
       toggleTheme: () =>
-        setTheme((prev) => (prev === "dark" ? "light" : "dark")),
+        persistTheme(theme === "dark" ? "light" : "dark"),
     }),
     [theme],
   );
