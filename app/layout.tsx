@@ -6,8 +6,7 @@ import Footer from "@/components/layout/footer";
 import { ThemeProvider } from "@/components/layout/theme-provider";
 // import ScrollToTop from "@/components/scroll-to-top";
 import ThemeToggle from "@/components/layout/theme-toggle";
-import { Logo } from "@/components/logo";
-// import Demo from"@/components/layout/demo";
+import {  LogoImage } from "@/components/logo-image";
 import BottomDock from "@/components/layout/bottom-dock";
 
 
@@ -40,7 +39,7 @@ export default function RootLayout({
       >
         <ThemeProvider>
           <div className="fixed left-8 top-4 z-50">
-            <Logo className="h-3 w-auto" />
+            <LogoImage className="h-3 w-auto" />
           </div>
           
           <ThemeToggle />
